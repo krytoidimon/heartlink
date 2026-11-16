@@ -1,0 +1,28 @@
+# Зависимости ставятся внутри образа командой npm ci
+node_modules/
+npm-debug.log*
+
+# Секреты и локальные настройки — НЕ должны попасть в образ
+.env
+*.env
+*.pem
+serviceAccountKey.json
+
+# Git и CI-конфигурация
+.git/
+.gitignore
+.github/
+
+# Тесты, документация и прочее
+tests/
+*.md
+.DS_Store
+.vscode/
+.idea/
+
+# Сами Docker-файлы в образе не нужны
+Dockerfile
+.dockerignore
+
+# SEO-отчёт и скриншоты не нужны в рабочем образе
+docs/

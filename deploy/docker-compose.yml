@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: heartlink-app:local
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      SITE_URL: https://heartlink.localhost
+      SEED_DEMO: ${SEED_DEMO:-false}
+    expose:
+      - "3000"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.30-alpine
+    depends_on:
+      app:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    restart: unless-stopped

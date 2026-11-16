@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HeartLink — сайт знакомств 18+: анкеты, лайки и пары</title>
+  <meta name="description" content="HeartLink — сайт знакомств для совершеннолетних (18+): создайте анкету, ставьте лайки и находите взаимные пары в своём городе.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#e8447a">
+  <link rel="canonical" href="{{SITE_URL}}/">
+
+  <!-- Open Graph / Twitter: как ссылка выглядит в соцсетях и мессенджерах -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HeartLink">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="HeartLink — сайт знакомств 18+">
+  <meta property="og:description" content="Создайте анкету, ставьте лайки и находите взаимные пары в своём городе.">
+  <meta property="og:url" content="{{SITE_URL}}/">
+  <meta property="og:image" content="{{SITE_URL}}/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <!-- defer: скрипт грузится параллельно и не блокирует отрисовку страницы -->
+  <script src="/app.js" defer></script>
+
+  <!-- Структурированные данные (schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HeartLink",
+    "url": "{{SITE_URL}}/",
+    "description": "Сайт знакомств для совершеннолетних: анкеты, лайки и взаимные пары.",
+    "applicationCategory": "SocialNetworkingApplication",
+    "inLanguage": "ru",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" }
+  }
+  </script>
+</head>
+<body>
+  <noscript><p class="muted" style="padding:16px">Для работы HeartLink нужен включённый JavaScript.</p></noscript>
+  <header class="topbar">
+    <a class="logo" href="/">♥ HeartLink</a>
+    <nav id="nav" class="nav hidden">
+      <button class="nav-btn active" data-view="discover">Анкеты</button>
+      <button class="nav-btn" data-view="matches">Пары</button>
+      <button class="nav-btn" id="logout">Выйти</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Авторизация -->
+    <section id="auth" class="panel">
+      <h1>HeartLink — сайт знакомств: найдите свою пару</h1>
+      <p class="muted">Сервис доступен только совершеннолетним (18+).</p>
+      <div class="tabs">
+        <button class="tab active" data-form="login-form">Вход</button>
+        <button class="tab" data-form="register-form">Регистрация</button>
+      </div>
+
+      <form id="login-form" class="form">
+        <label>Email <input name="email" type="email" required autocomplete="email"></label>
+        <label>Пароль <input name="password" type="password" required autocomplete="current-password"></label>
+        <button class="btn primary" type="submit">Войти</button>
+      </form>
+
+      <form id="register-form" class="form hidden">
+        <label>Имя <input name="name" required maxlength="50"></label>
+        <label>Email <input name="email" type="email" required autocomplete="email"></label>
+        <label>Пароль (от 8 символов) <input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <div class="row">
+          <label>Возраст <input name="age" type="number" min="18" max="99" required></label>
+          <label>Пол
+            <select name="gender" required>
+              <option value="female">Женский</option>
+              <option value="male">Мужской</option>
+              <option value="other">Другой</option>
+            </select>
+          </label>
+        </div>
+        <label>Город <input name="city" maxlength="60"></label>
+        <label>О себе <textarea name="bio" rows="3" maxlength="500"></textarea></label>
+        <button class="btn primary" type="submit">Создать анкету</button>
+      </form>
+      <p id="auth-error" class="error" role="alert"></p>
+    </section>
+
+
+    <!-- Описание сервиса для поисковиков и новых посетителей (виден только на странице входа) -->
+    <section id="about" class="panel about">
+      <h2>Как работает HeartLink</h2>
+      <h3>1. Создайте анкету</h3>
+      <p>Регистрация доступна только совершеннолетним: возраст проверяется на сервере.</p>
+      <h3>2. Смотрите анкеты</h3>
+      <p>Фильтруйте ленту по городу и полу, нажимайте «нравится» или «пропустить».</p>
+      <h3>3. Находите пары</h3>
+      <p>Если симпатия взаимная, человек появится в разделе «Пары».</p>
+      <h3>Безопасность</h3>
+      <p>Пароли хранятся только в виде хэша, адрес email другим пользователям не показывается.</p>
+    </section>
+
+    <!-- Лента анкет -->
+    <section id="discover" class="panel hidden">
+      <h2 class="sr-only">Анкеты пользователей</h2>
+      <div class="filters">
+        <input id="filter-city" placeholder="Город">
+        <select id="filter-gender">
+          <option value="">Любой пол</option>
+          <option value="female">Женщины</option>
+          <option value="male">Мужчины</option>
+          <option value="other">Другое</option>
+        </select>
+        <button id="apply-filters" class="btn">Найти</button>
+      </div>
+      <div id="card-area"></div>
+      <p id="match-banner" class="banner hidden"></p>
+    </section>
+
+    <!-- Пары -->
+    <section id="matches" class="panel hidden">
+      <h2>Ваши пары</h2>
+      <ul id="match-list" class="match-list"></ul>
+      <p id="no-matches" class="muted hidden">Пока нет взаимных симпатий. Ставьте лайки!</p>
+    </section>
+  </main>
+
+</body>
+</html>

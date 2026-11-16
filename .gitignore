@@ -1,0 +1,9 @@
+node_modules/
+npm-debug.log*
+.env
+*.env
+*.pem
+serviceAccountKey.json
+.DS_Store
+.vscode/
+.idea/

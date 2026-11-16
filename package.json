@@ -1,0 +1,15 @@
+{
+  "name": "heartlink",
+  "version": "1.0.0",
+  "description": "Учебный сайт знакомств для практики по Docker и GitHub Actions",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:demo": "SEED_DEMO=true node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "ISC"
+}
